@@ -178,6 +178,64 @@
     </div>
 </main>
 
+        <div class="col-12">
+            <button class="btn btn-secondary">Apply Filters</button>
+        </div>
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Brand</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="p : ${productPage.content}">
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.category.name}"></td>
+            <td th:text="${p.brand.name}"></td>
+            <td th:text="${p.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination">
+
+            <li class="page-item" th:classappend="${productPage.first} ? 'disabled'">
+                <a class="page-link" th:if="${!productPage.first}"
+                   th:href="@{/products(page=${productPage.number - 1}, categoryId=${selectedCategoryId}, brandId=${selectedBrandId}, sortBy=${sortBy}, direction=${direction})}">
+                    Previous
+                </a>
+                <a class="page-link" th:if="${productPage.first}" href="#" tabindex="-1" aria-disabled="true">
+                    Previous
+                </a>
+            </li>
+
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}"
+                th:classappend="${i == productPage.number} ? 'active'">
+                <a class="page-link" th:text="${i + 1}"
+                   th:href="@{/products(page=${i}, categoryId=${selectedCategoryId}, brandId=${selectedBrandId}, sortBy=${sortBy}, direction=${direction})}"></a>
+            </li>
+
+            <li class="page-item" th:classappend="${productPage.last} ? 'disabled'">
+                <a class="page-link" th:if="${!productPage.last}"
+                   th:href="@{/products(page=${productPage.number + 1}, categoryId=${selectedCategoryId}, brandId=${selectedBrandId}, sortBy=${sortBy}, direction=${direction})}">
+                    Next
+                </a>
+                <a class="page-link" th:if="${productPage.last}" href="#" tabindex="-1" aria-disabled="true">
+                    Next
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+</div>
 <div th:replace="fragments/footer :: footer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
